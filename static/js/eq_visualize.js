@@ -21,54 +21,81 @@ function createMap(eqEventMarkers) {
   // markers for earthquake events and associated pop-ups, etc.
 
   // Create the tile layer that will be the background of our map
-  var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
+  var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
     maxZoom: 18,
     id: "mapbox.light",
     accessToken: API_KEY
   });
 
-  // Create a baseMaps object to hold the lightmap layer
-  var baseMaps = {
-    "Light Map": lightmap
-  };
-
-  // Create an overlayMaps object to hold the bikeStations layer
-  var overlayMaps = {
-    "Earthquake Events": eqEventMarkers
-  };
-
-  // Create the map object with options
-  var eq_map = L.map("eq_map_id", {
-    center: [44.672501, -103.855103],
-    zoom: 3,
-    layers: [lightmap, eqEventMarkers]
+  // Create the tile layer that will be the background of our map
+  var streetsMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox.streets",
+    accessToken: API_KEY
   });
 
-  // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
-  L.control.layers(baseMaps, overlayMaps, {
-    collapsed: true
-  }).addTo(eq_map);
+  // Create the tile layer that will be the background of our map
+  var outdoorsMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox.outdoors",
+    accessToken: API_KEY
+  });
 
-
+  // Create the tile layer that will be the background of our map
+  var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/256/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"http://mapbox.com\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox.satellite",
+    accessToken: API_KEY
+  });
 
   // Create an overlay layer of the tectonic plate boundaries
-  d3.json(tp_boundaries_url).then( tp => {
+  d3.json(tp_boundaries_url).then(tp => {
 
     // Use Leaflet to add the GeoJSON data to the map
     var plateMap = L.geoJSON(tp, {
       style: {
         color: 'blue',
-        weight: 1
+        weight: 2,
+        dashArray: "10 5"
       },
 
       onEachFeature: function (feature, layer) {
-        layer.bindPopup("This is a pop-up");
+        layer.bindPopup("This is a tectonic plate boundary line.");
       }
 
     });
 
-    plateMap.addTo(eq_map)
+
+    // Create a baseMaps object to hold the lightmap layer
+    var baseMaps = {
+      "Light Map": lightMap,
+      "Streets Map": streetsMap,
+      "Outdoors Maps": outdoorsMap,
+      "Satellite Map": satelliteMap
+    };
+
+    // Create an overlayMaps object to hold the bikeStations layer
+    var overlayMaps = {
+      "Earthquake Events": eqEventMarkers,
+      "Tectonic Plate Boundaries": plateMap
+    };
+
+    // Create the map object with options
+    var eq_map = L.map("eq_map_id", {
+      center: [44.672501, -103.855103],
+      zoom: 3,
+      layers: [lightMap, eqEventMarkers, plateMap]
+    });
+
+    // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
+    L.control.layers(baseMaps, overlayMaps, {
+      collapsed: false
+    }).addTo(eq_map);
+
   });
 
 }
@@ -92,16 +119,22 @@ function createMarkers(eqData) {
 
   // Loop through the earthquake event array
   eqEventData.forEach(eq => {
+
     // For each station, create a marker and bind a popup with the earthquake event name
     latlong = [eq.geometry.coordinates[1], eq.geometry.coordinates[0]];
-    popupText = "<h5>" + eq.properties.title + "</h5><hr><p>Time: " + eq.properties.time + "</p>"
-    var eqMarker = L.marker(latlong).bindPopup(popupText);
+    popupText = "<h6>" + eq.properties.title + "</h6><hr><p>Time: " + eq.properties.time + "</p>"
+    markerStyle = {
+      color: 'darkred',
+      fillColor: 'red',
+      fillOpacity: 0.5,
+      radius: 100000
+    };
+
+    // Now, create the marker - a circle in this case
+    var eqMarker = L.circle(latlong, markerStyle).bindPopup(popupText);
 
     // Add the marker to the eqMarkers array
     eqMarkers.push(eqMarker);
-
-    // console.log(latlong);
-    // console.log(popupText);
 
   });
 
