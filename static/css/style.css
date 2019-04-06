@@ -5,3 +5,22 @@ body,
   padding: 0;
   margin: 0;
 }
+
+/* .slider {
+  background-color: blue;
+}
+
+.slider#slider-timestamp {
+  color:black;
+} */
+
+.leaflet-popup-content {
+  font-family: "arial";
+  text-align: center;
+  font-weight: 800;
+}
+
+.leaflet-popup-content h4 {
+  font-size: 15px;
+  font-weight: 800;
+}

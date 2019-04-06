@@ -16,7 +16,7 @@ const usgs_eq_7d_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summar
 const usgs_eq_30d_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";  // ~9300 records
 
 
-function createMap(eqEventMarkers) {
+function createMap(eqEventMarkers ) {
   // This function accepts a Leaflet Layer Group containing
   // markers for earthquake events and associated pop-ups, etc.
 
@@ -64,11 +64,10 @@ function createMap(eqEventMarkers) {
       },
 
       onEachFeature: function (feature, layer) {
-        layer.bindPopup("This is a tectonic plate boundary line.");
+        layer.bindPopup("Tectonic plate boundary line");
       }
 
     });
-
 
     // Create a baseMaps object to hold the lightmap layer
     var baseMaps = {
@@ -96,6 +95,8 @@ function createMap(eqEventMarkers) {
       collapsed: false
     }).addTo(eq_map);
 
+    });
+
   });
 
 }
@@ -120,10 +121,20 @@ function createMarkers(eqData) {
   // Loop through the earthquake event array
   eqEventData.forEach(eq => {
 
-    // For each station, create a marker and bind a popup with the earthquake event name
-    latlong = [eq.geometry.coordinates[1], eq.geometry.coordinates[0]];
-    popupText = "<h6>" + eq.properties.title + "</h6><hr><p>Time: " + eq.properties.time + "</p>"
-    markerStyle = {
+    // Get key information
+    eqLatLong = [eq.geometry.coordinates[1], eq.geometry.coordinates[0]];
+    eqDepth = eq.geometry.coordinates[2]
+    eqMag = eq.properties.mag;
+    eqMagType = eq.properties.magType;
+    eqPlace = eq.properties.place;
+    eqTime = eq.properties.time;
+    eqTimeZone = eq.properties.tz;
+
+    // Create Popup Text
+    eqPopupText = `<h6>${eqPlace}</h6><hr><p>EarthquateTime: ${eqTime}</p>`
+
+    // Specify Marker Style
+    eqMarkerStyle = {
       color: 'darkred',
       fillColor: 'red',
       fillOpacity: 0.5,
@@ -131,18 +142,19 @@ function createMarkers(eqData) {
     };
 
     // Now, create the marker - a circle in this case
-    var eqMarker = L.circle(latlong, markerStyle).bindPopup(popupText);
+    var eqMarker = L.circle(eqLatLong, eqMarkerStyle).bindPopup(eqPopupText);
 
     // Add the marker to the eqMarkers array
     eqMarkers.push(eqMarker);
 
   });
 
-  // console.log(eqMarkers);
+      
+  var eqMarkerLayerGroup = L.layerGroup(eqMarkers);
 
   // Create a layer group made from the earthquake event markers array
   // Then pass it into the createMap function
-  createMap(L.layerGroup(eqMarkers));
+  createMap( eqMarkerLayerGroup );
 }
 
 // Perform an API call to the Citi Bike API to get the earthquake information,
