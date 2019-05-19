@@ -32,4 +32,4 @@ An additional Overlap map shows world techtonic plate boundaries, providing a vi
 
 | Figure 1: Earthquake - Screenshot of Visualization |
 |----------|
-| ![Earthquake - Screenshot of Visualization](docs/Earthquate-Screenshot_of_Visualization.png "Figure 1: Earthquake - Screenshot of Visualization") |
+| ![Earthquake - Screenshot of Visualization is loading...](docs/Earthquate-Screenshot_of_Visualization.png "Figure 1: Earthquake - Screenshot of Visualization") |
