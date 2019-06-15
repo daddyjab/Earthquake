@@ -17,7 +17,7 @@ This application provides Visualization of Recent Global Earthquake Activity bas
 
 * GitHub: https://github.com/daddyjab/Earthquake
 * Visualization (JavaScript, D3, Leaflet): https://daddyjab.github.io/Earthquake
-* Visualization (Power BI): https://github.com/daddyjab/Earthquake/resources/USGS%20Seismic%20Events.pbix
+* Visualization (Power BI): https://github.com/daddyjab/Earthquake/raw/master/resources/USGS%20Seismic%20Events.pbix
 
 # Contributions
 
