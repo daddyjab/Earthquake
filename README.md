@@ -42,9 +42,9 @@ An additional Overlap map shows world techtonic plate boundaries, providing a vi
 | ![Earthquake - Screenshot of Visualization - Javascript, D3, Leaflet is loading...](docs/Earthquate-D3.png "Figure 1: Earthquake - Screenshot of Visualization - Javascript, D3, Leaflet") |
 
 ## Additional Visualization: Power BI
-After completing the main visualization using JavaScript, D3, and Leaflet, the visualization was implemented using an additional method: Microsoft Power BI.  The report was created using Power BI Desktop (Figure 2) and then published to Power BI Service (Figure 3).
+After completing the main visualization using D3 as noted above, the visualization was implemented using an additional method: Microsoft Power BI.  The report was created using Power BI Desktop (Figure 2) and then published to Power BI Service (Figure 3).
 
-The USGS seismic event data used used as the data source, and a query was implemented to clean the data and transform the data columns as required. An ArcGIS visualization was used to plot the seismic events, and other visualization elements provide summary information for various types of seismic events, with additional empahsis on causes other than earthquakes.  A parameter was used to select the period over which seismic events were obtained: past hour, past day, past week, or past month.
+The USGS seismic event data was used as the data source, and a query was implemented to clean the data and transform the data columns as required. An ArcGIS visualization was used to plot the seismic events, and other visualization elements provide summary information for various types of seismic events, with additional empahsis on causes other than earthquakes.  A parameter was used to select the period over which seismic events were obtained: past hour, past day, past week, or past month.
 
 | Figure 2: Earthquake - Screenshot of Visualization - Power BI Desktop |
 |----------|
